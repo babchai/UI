@@ -57,6 +57,12 @@ ul, ol, dl { /* Due to variations between browsers, it's best practices to zero 
 
  
 }
+#logo-nav-top img
+{
+   margin-top:10px; 
+   margin-left:20px;	
+}
+
 
 #side-title {
  font-size:20px;
