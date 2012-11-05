@@ -1,0 +1,163 @@
+<!doctype html>
+
+<html class="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Untitled Document</title>
+<link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
+<link href="styles/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="styles/jquery.fancybox.css" type="text/css" media="screen" />
+
+
+<script src="respond.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+ <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+ 
+ 
+   function retrieveData(func, val)
+   {
+	   $("#loading").show();
+	   $.getJSON('retrieve.php', 
+	           { "func": func, "val":val }, 
+			   function(data) {
+                //alert (data.content); 
+			     $("#loading").hide();
+			   //$(container).html(data.content);
+			  
+        });
+    }  
+
+ 
+
+    $(document).ready(function(){
+
+       showError("LOGIN FAILED");
+		
+		$('#loginForm').submit(function() {
+ 			if($("#loginForm").valid())
+			{
+			var val = $("#username").val() + "|"+$("#password").val();
+			retrieveData("login", val);	
+				
+			}
+  			return false;
+	   });
+		
+
+		$("#btnRegister").click(function() {
+			
+			window.location = "register.html";
+			
+		});
+		
+		
+		
+		$("#loginForm").validate({
+			rules:{
+				username:{required:true},
+				password:{required:true}
+			},
+			errorElement: "div",
+            wrapper: "div",  // a wrapper around the error message
+            errorPlacement: function(error, element) {
+            	offset = element.offset();
+            	error.insertBefore(element)
+            	error.addClass('message');  // add a class to the wrapper
+            	error.css('position', 'absolute');
+            	error.css('left', offset.left + element.outerWidth());
+            	error.css('top', offset.top);
+           },
+		     highlight: function(element){
+                //$(element).css({"border": "2px solid #CC0000"});
+                $(element).removeClass("error");
+                //$(element).addClass("errorHighlight");
+		   }
+
+			
+		});
+		
+	});
+	
+	
+	function error(msg,callback) {
+    var ret;
+    jQuery.fancybox({
+        modal : true,
+        content : "<div class='errorMessage'>"+msg+"</div>",
+        beforeShow : function() {
+            jQuery("#fancyConfirm_cancel").click(function() {
+				//alert('close');
+                ret = false; 
+                jQuery.fancybox.close();
+            })
+            jQuery("#fancyConfirm_ok").click(function() {
+                ret = true; 
+				alert('delete success..');
+                jQuery.fancybox.close();
+            })
+        },
+        onClosed : function() {
+            callback.call(this,ret);
+        }
+     });
+	}
+	
+	function showError(msg)
+	{
+	   $(".errorMessage").html(msg);
+	   $(".errorMessage").show();	
+	  
+	}
+	
+	function hideError()
+	{
+		$(".errorMessage").hide();
+		
+	}
+	
+</script>
+
+
+</head>
+<body class="login">
+<div class="gridContainer clearfix">
+
+    <form id="loginForm">
+     <div id="loginContainer"> 
+    <div id="logoContainer" align="center">
+  <img src="images/logo.png">
+  </div>         
+  
+
+  <div id="login-header">SIGN IN</div>
+       <div id="loginWrapper" class="WrapperRounderCorner-bottom" >
+
+       <h2 style="color:#333333">Use the Username to sign-in or register now.</h2>
+         <div class="errorMessage" style="display:none"> </div>
+       <div style="padding:left:10px" >
+         <div class="login-text-name">Username</div> <div class="login-text-box"><input type="text" name="username"  id="username"> </div>
+          <div  class="clearfloat"></div>
+          <div class="login-text-name"> Password </div><div class="login-text-box"><input type="password" name="password" id="password" > </div>
+ 		  <div  class="clearfloat"></div>
+      </div>
+      <div  class="clearfloat"></div>
+      <div id="retrieve-password"><a href="recovery.html">Forget your username or password?</a></div>
+       
+       <div class="spacer"> </div>
+          <div class="clearfloat"></div>
+        <div id="loading"> <img src="images/loading.gif" /></div>
+         <div class="login-button">
+               <input type="button"  id="btnRegister" border="0" value="" />
+               <input type="submit"  id="btnSubmit"  border="0" value="" />
+		</div>
+        <div  class="clearfloat"></div>
+        </div>
+   </div>
+   </form>
+</div>
+</body>
+</html>

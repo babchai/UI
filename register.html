@@ -1,0 +1,105 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Untitled Document</title>
+<link href="boilerplate.css" rel="stylesheet" type="text/css">
+<link href="style.css" rel="stylesheet" type="text/css">
+<!-- 
+To learn more about the conditional comments around the html tags at the top of the file:
+paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
+
+Do the following if you're using your customized build of modernizr (http://www.modernizr.com/):
+* insert the link to your js here
+* remove the link below to the html5shiv
+* add the "no-js" class to the html tags at the top
+* you can also remove the link to respond.min.js if you included the MQ Polyfill in your modernizr build 
+-->
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="respond.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+ <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+		
+		$("#loginForm").validate({
+			rules:{
+				email:{required:true, email:true},
+			},
+			errorElement: "div",
+            wrapper: "div",  // a wrapper around the error message
+            errorPlacement: function(error, element) {
+            	offset = element.offset();
+            	error.insertBefore(element)
+            	error.addClass('message');  // add a class to the wrapper
+            	error.css('position', 'absolute');
+            	error.css('left', offset.left + element.outerWidth());
+            	error.css('top', offset.top);
+           }
+   
+			
+			
+		});
+		
+	});
+	
+</script>
+
+
+</head>
+<body class="login">
+<div class="gridContainer clearfix">
+
+
+    <form id="loginForm">
+     <div id="loginContainer" style="width:960px" > 
+ 
+    <div align="center" style=" margin:auto; clear:both; ">
+  <img src="images/logo.png" >
+  </div>
+      <div style="margin:auto; clear:both;width:800px" > 
+          Nav Bar 1
+      </div>
+      <div id="register-step1" style="margin:auto; width:800px; padding-bottom:10px;">
+        
+       <div id="register-sidebox" class="WrapperRounderCorner" >
+          Nav Bar 2
+       </div>
+       <div id="loginWrapper" class="WrapperRounderCorner" style="min-height:380px; width:500px; background-image:none; background-color:#CCC">  
+       
+       
+       <!-- <h1 style="background-color:#666">SIGN IN</h1>-->
+       <h1>Register</h1>
+       <br />
+       
+         <div class="register-text">Full Name</div> <div class="login-text-box"><input type="text" name="name"  id="name"> </div>
+       
+       <div class="register-text">Address</div> <div class="login-text-box"><input type="text" name="address"  id="address"> </div>
+       
+       <div class="spacer" style="clear:both"> </div>
+       <div class="register-text">Username</div> <div class="login-text-box"><input type="text" name="username"  id="username"> </div>
+       <div class="register-text">Password</div> <div class="login-text-box"><input type="text" name="password"  id="password"> </div>
+       <div class="register-text">Retype Password</div> <div class="login-text-box"><input type="text" name="repassword"  id="repassword"> </div>
+       
+         <div class="login-button">
+               <input type="submit"  id="btnSubmit" style="background-image: url(images/btn-signin.png); background-color: transparent; background-repeat: no-repeat; height:33px; width:126px;cursor: pointer" border="0" value="" />
+        </div>
+        </div>
+        </div>
+   </div>
+   
+  
+   </form>
+</div> 
+</body>
+</html>

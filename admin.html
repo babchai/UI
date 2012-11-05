@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+<link rel="stylesheet" href="styles/jquery.fancybox.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="styles/admin.css" type="text/css" />
+<!--
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+ <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> -->
+
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+ <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+
+<script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+
+
+<script>
+   
+  function init()
+  {
+	  
+	  
+	   $('#btn1').click(); // init
+  }
+  
+    function retrieveEdit(container, func, id)
+   {
+        var html = '<div class="pop-header">Edit Data </div>';
+           
+	   $.post(
+	   "retrieve.php",
+	   { "func": func, "id":id },
+ 		function(data) {
+			
+			//$(container).html('');
+			//$('.loading').remove();
+			
+   			$(container).html(html+data[0]);
+ 		}, 
+ 			"json"
+		);   
+   }
+   
+   
+   //var uniqueIDs = [1, 2, 3, 4];
+/*var $deferreds = [];            
+    
+
+    $deferreds.push(
+      $.ajax({
+        url: "/echo/json/",
+        data: { json: JSON.stringify({ uniqueId: elem }) },
+        type: "POST"
+       }).done(function (data) {
+         // document.write(data.uniqueId);
+       })
+     );
+
+
+$.when.apply($, $deferreds).done(function () {
+    $.each(arguments, function () {
+       document.write(this[0].uniqueId);
+    });
+});
+  */ 
+   
+    
+   function retrieveData(container, func, val)
+   {
+	   $(container).prepend('<div class="loading"><img src="images/Loading-bar.gif" width="150px" /></div>');
+	   
+	   
+	   $.getJSON('retrieve.php', 
+	           { "func": func, "val":val }, 
+			   function(data) {
+               //alert (data.content); 
+			   $('.loading').hide();
+			   $(container).html(data.content);
+        });
+    
+	
+	}  
+
+ 
+  
+  function fancyConfirm(msg,callback) {
+    var ret;
+	 var html = '<div class="pop-header">DELETE</div>';
+	     html += '<div style=\"margin:1px;width:240px; height:auto\"><h1>'+msg+'</h1><div style=\"text-align:right;margin-top:10px;\"><input id=\"fancyConfirm_cancel\"class=\"btnGrey\" type=\"button\" value=\"Cancel\"><input id=\"fancyConfirm_ok\" class=\"btnBlue\" type=\"button\" value=\"Ok\"></div></div>';
+		 
+    jQuery.fancybox({
+        modal : false,
+        content : html,
+		showCloseButton:'show',
+        beforeShow : function() {
+            jQuery("#fancyConfirm_cancel").click(function() {
+				//alert('close');
+                ret = false; 
+                jQuery.fancybox.close();
+            })
+            jQuery("#fancyConfirm_ok").click(function() {
+                ret = true; 
+				alert('delete success..');
+                jQuery.fancybox.close();
+            })
+        },
+        onClosed : function() {
+            callback.call(this,ret);
+        }
+     });
+	}
+	
+
+	$(".edit").fancybox({
+		
+		//var currentId = $(this).attr('id');
+		beforeShow: function(){
+		//alert("complete!");
+		    retrieveEdit('#data', "edit")
+		},
+		'autoDimensions' :true,
+		'minwidth' : '400',
+		'transitionIn'	:	'elastic',
+			'transitionOut'	:	'elastic',
+			'speedIn'		:	600, 
+			'speedOut'		:	200, 
+			'overlayShow'	:	false
+			
+	});
+	
+	
+	
+    $(document).ready(function() {
+     
+	 $('#select-box').live('change', function(){
+			  window.location.href = $(this).val();
+			
+		});
+		
+		
+	 
+	   $('#saveMenu').live('click', function(){
+		   
+		  // var sorted = $( "#sections" ).sortable( "serialize", { key: "sort" } );
+		   var sortedIDs = $( "#sections" ).sortable( "toArray" );
+		   retrieveData('.content', 'saveSort', sortedIDs);
+		   //alert(sortedIDs);
+	   });
+    
+		$('.side-menu-list').live('click',function() {
+			 $(".side-menu-list-selected").each(function(index, element) {
+                 $(this).removeClass("side-menu-list-selected");
+             });
+			  
+			  $(this).addClass("side-menu-list-selected");
+					
+		     var currentId = $(this).attr('identity');
+			
+		     retrieveData(".content", 'content', currentId);
+	    });
+		
+		$('.content-nav-list').live('click',function(){
+			
+			$(".content-nav-list-selected").each(function(index, element) {
+                 $(this).removeClass("content-nav-list-selected");
+             });
+			  
+			  $(this).addClass("content-nav-list-selected");
+					
+		     var currentId = $(this).attr('identity');
+			 
+			 retrieveData('#content-table', 'subContent', currentId);
+		});
+      
+	  
+	  $('#btn1, #btn2, #btn3, #btn4, #btn5').click(function() {
+        
+		$(".main-button-selected").each(function(index, element) {
+            $(this).removeClass("main-button-selected");
+        });
+		
+		
+		$(this).addClass("main-button-selected");
+		
+		var currentId = $(this).attr('id');
+		
+		$(".sidebar2").each(function(index, element) {
+		     
+			 var val = parseInt($(this).css("left"),5);
+			 //alert(val);
+			 var l;
+			 if(val == '0')
+			 {
+				  l = -$(this).outerWidth();
+			 }
+			 else
+			 {
+				 
+				l = 0; 
+			 }
+			 $(this).animate({
+			  left:l
+            });
+			
+			 
+			$(this).empty();
+			
+			 $(this).animate({
+			  left:0
+            });
+			retrieveData(this, 'subMenu', currentId);
+        });
+		
+      });
+	  
+	  init();
+	  
+    });
+</script>
+
+
+</head>
+
+<body>
+<div class="dimBackground" style="display:none"></div>
+
+
+<div style="display:none">
+<div id="data">
+     <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
+</div>
+</div>
+
+
+<div class="container">
+  <div class="sidebar1">
+    <ul class="nav">
+      <li><a id="btn1" class="myButtonLink1"></a></li>
+      <li><a id="btn2" class="myButtonLink2"></a></li>
+      <li><a id="btn3" class="myButtonLink3"></a></li>
+      <li><a id="btn4" class="myButtonLink4"></a></li>
+      <li><a id="btn5"  class="myButtonLink5"></a></li>
+    </ul> 
+    <p>&nbsp;</p>
+    <!-- end .sidebar1 --></div>
+  <div id="topContainer">
+  <div id="logo-nav-top" align="left" >
+  <img src="images/logo.png" >
+
+  </div>
+  <div id="user-nav-top" align="right">
+     <img src="images/little-blu.png"  /> Welcom, Simon | Logout     
+  </div>
+  </div>
+ 
+    <div id="sidebarWarpper">
+    <div class="sidebar2">
+    
+    <!-- end .sidebar2 -->
+    </div>
+  </div>
+  <div id="contentWrapper">
+    <div class="content">
+       
+       
+       </div>
+       <!-- end .content -->
+    </div>
+    <div class="clearfloat"></div>
+  </div>
+<!-- end .container -->
+</div>
+</body>
+</html>

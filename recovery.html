@@ -1,0 +1,129 @@
+<!doctype html>
+
+<html class="">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Untitled Document</title>
+<link href="styles/boilerplate.css" rel="stylesheet" type="text/css">
+<link href="styles/style.css" rel="stylesheet" type="text/css">
+
+<script src="respond.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+ <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+     
+   function retrieveData(func, val)
+   {
+	   $("#loading").show();
+	   $.getJSON('retrieve.php', 
+	           { "func": func, "val":val }, 
+			   function(data) {
+                //alert (data.content); 
+			     $("#loading").hide();
+			   //$(container).html(data.content);
+			  
+        });
+    }  
+
+ 
+
+    $(document).ready(function(){
+		showError("PASSWORD NOT FOUND");
+		
+		$('#loginForm').submit(function() {
+ 			if($("#loginForm").valid())
+			{
+			   var val = $("#email").val() ;
+			     retrieveData("recovery", val);
+			}
+  			return false;
+	   });
+		
+		
+		$("#loginForm").validate({
+			rules:{
+				email:{required:true, email:true},
+			},
+			errorElement: "div",
+            wrapper: "div",  // a wrapper around the error message
+            errorPlacement: function(error, element) {
+            	offset = element.offset();
+                error.insertBefore(element)
+            	error.addClass('message');  // add a class to the wrapper
+            	error.css('position', 'absolute');
+            	error.css('left', offset.left + element.outerWidth());
+            	error.css('top', offset.top);	
+           }, 
+		   highlight: function(element){
+                //$(element).css({"border": "2px solid #CC0000"});
+                $(element).removeClass("error");
+                //$(element).addClass("errorHighlight");
+		   }
+		});
+		
+	});
+	
+	
+	
+    function showError(msg , isNotify)
+	{
+		if(isNotify)
+		{
+		   $(".errorMessage").addClass("notifyMessage");
+		}
+		
+	      $(".errorMessage").html(msg);
+		  
+	   $(".errorMessage").show();	
+	 /*  $('#loginWrapper').css("height","190px");*/
+	}
+	
+	function hideError()
+	{
+		$(".errorMessage").hide();
+		/*$('#loginWrapper').css("height","160px");*/
+	}
+	
+	
+</script>
+
+
+</head>
+<body class="login">
+<div class="gridContainer clearfix">
+
+    <form id="loginForm">
+     <div id="loginContainer"> 
+    <div id="logoContainer" align="center" >
+       <img src="images/logo.png" >
+     </div>
+  <div id="login-header">PASSWORD RECOVERY</div>
+       <div id="loginWrapper" class="WrapperRounderCorner-bottom">
+      <!-- <h1 style="background-color:#666">SIGN IN</h1>-->
+       <h2>To reset your password, please fill in your email address.</h2>
+       <div class="errorMessage" style="display:none;"></div>
+       <div >
+         <div class="login-text-name">Email</div> <div class="login-text-box"><input type="text" name="email"  id="email"> </div>
+        <div  class="clearfloat"></div>
+    
+       </div>
+       <div class="spacer"> </div>
+        <div  class="clearfloat"></div>
+       <div id="loading"> <img src="images/loading.gif" /></div>
+         <div class="login-button">
+       
+ 
+           
+               <input type="submit"  id="btnReset"  border="0" value="" />
+        </div>
+         <div  class="clearfloat"></div>
+        </div>
+   </div>
+   </form>
+</div>
+</body>
+</html>
