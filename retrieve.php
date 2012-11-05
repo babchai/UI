@@ -1,7 +1,7 @@
 <?
 
 $_REQUEST['func'];
-sleep(1);
+
 if($_REQUEST['func']=='recovery')
   recovery();
 
@@ -64,7 +64,7 @@ function display()
 
 function input()
 {
-	 sleep(1);
+	// sleep(1);
 	$html = $html.'   <div>
    <h1 id="content-title" style="width:50%; float:left">Input</h1>
    <div align="right" style="width:50%; float:left">
@@ -117,14 +117,14 @@ function input()
 
 function saveSort()
 {
-   sleep(1);
+ //  sleep(1);
     return "";	
 	
 }
    
 function sortable2()
 {   
-   sleep(1);
+  // sleep(1);
 	$html = $html.'   <div>
    <h1 id="content-title" style="width:50%; float:left">Sortable</h1>
    <div align="right" style="width:50%; float:left">
@@ -182,14 +182,15 @@ function delete()
 
 function login()
 {
-   sleep(3);
+//  sleep(3);
    	$arr = array ('id'=>$id,'pass'=>"0");
    echo json_encode($arr);
 	
 }
 
 function subContent($id)
-{sleep(1);
+{
+	//sleep(1);
 	$data = '      
        <table width="100%" border="0" cellpadding="5" cellspacing="0">
          <tr>
@@ -243,7 +244,7 @@ erat volutpat. Ut wisi enim ad minim veniam.</td>
 
 function content($id)
 {
-	sleep(1);
+	//sleep(1);
 	
    $data = '
    <div>
@@ -287,11 +288,13 @@ euismod tincidunt.</div>
 
 function subMenu($id)
 {
-	$data = '<h1 id="side-title">'.$id.'</h1>
+	$data = '<div>
+	<h1 id="side-title">'.$id.'</h1>
     <div id="side-instruction">Choose the elements you’d like<br /> to add below:</div> 
     <div id="side-more"><a href="#" class="tip2">Learn More<span> Lorem ipsum dolor sit amet, consectetuer adipiscing elit,<br> sed diam
 nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam </span></a></div> 
-    <div id="side-menu"> 
+    <div>
+	<div id="side-menu"> 
       <li class="side-menu-list" identity ="sub-menu-1-'.$id.'" ><img src="images/side-icon1.png" />Manage</li>
       <li class="side-menu-list" identity ="sub-menu-2-'.$id.'"><img src="images/side-icon2.png" />Photo</li>
       <li class="side-menu-list" identity ="sub-menu-3-'.$id.'"><img src="images/side-icon3.png" />Setting</li>
