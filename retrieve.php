@@ -1,7 +1,7 @@
 <?
 
 $_REQUEST['func'];
-
+sleep(1);
 if($_REQUEST['func']=='recovery')
   recovery();
 
